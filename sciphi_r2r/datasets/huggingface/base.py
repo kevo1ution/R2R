@@ -32,10 +32,10 @@ class HuggingFaceDataProvider(DatasetProvider):
         self.datasets = []  # Prepare to store loaded datasets
         for config in dataset_configs:
             logger.info(
-                f"Loading dataset {config.name} with text field {config.text_field} and max entries {config.max_entries}."
+                f"Loading dataset {config.name} with metadta {config.metadata} and max entries {config.max_entries}."
             )
             dataset = load_dataset(
-                config.name, split=config.split, streaming=streaming
+                config.name, split="train", streaming=streaming
             )
             self.datasets.append((dataset, config))
 
@@ -53,7 +53,11 @@ class HuggingFaceDataProvider(DatasetProvider):
                     break  # Stop streaming if max_entries is reached
 
                 # Extract text using the specified text field or default to 'text' field
-                text_field = config.text_field if config.text_field else "text"
+                text_field = (
+                    config.metadata["text_field"]
+                    if config.metadata["text_field"]
+                    else "text"
+                )
                 text = entry[text_field] if text_field in entry else None
 
                 if text:

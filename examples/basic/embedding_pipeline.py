@@ -48,8 +48,12 @@ if __name__ == "__main__":
     dataset_provider = HuggingFaceDataProvider()
     dataset_provider.load_datasets(
         [
-            DatasetConfig("camel-ai/physics", None, 10, "message_2"),
-            DatasetConfig("camel-ai/chemistry", None, 10, "message_2"),
+            DatasetConfig(
+                "camel-ai/physics", None, 10, {"text_field": "message_2"}
+            ),
+            DatasetConfig(
+                "camel-ai/chemistry", None, 10, {"text_field": "message_2"}
+            ),
         ],
     )
 
@@ -84,11 +88,9 @@ if __name__ == "__main__":
             break
         document_batch.append(
             BasicDocument(
-                id=str(
-                    uuid.uuid5(uuid.NAMESPACE_URL, f"{config.name}_{text}")
-                ),
+                id=document_id,
                 text=text,
-                metadata={"document_id": document_id},
+                metadata={}
             )
         )
         entry_id += 1

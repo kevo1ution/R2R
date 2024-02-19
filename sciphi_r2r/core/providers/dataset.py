@@ -8,8 +8,7 @@ class DatasetConfig:
         name: str,
         data_files: Optional[list[str]] = None,
         max_entries: Optional[int] = None,
-        text_field: Optional[str] = None,
-        split: Optional[str] = "train",
+        metadata: Optional[dict] = None,
     ):
         """
         Initialize the dataset configuration.
@@ -18,13 +17,11 @@ class DatasetConfig:
             name (str): The name of the dataset.
             data_files (Optional[list[str]]): Specific data files or patterns to load from the dataset.
             max_entries (Optional[int]): Maximum number of entries to stream from the dataset. None for unlimited.
-            text_field (Optional[str]): The specific field in the dataset to treat as the main text content.
         """
         self.name = name
         self.data_files = data_files or []
         self.max_entries = max_entries
-        self.text_field = text_field
-        self.split = split
+        self.metadata = metadata or {}
 
 
 class DatasetProvider(ABC):
